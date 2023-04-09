@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Doktorlar Sayfası
+{% endblock title %}
+
+
+
+
+{% block styles %}
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"/>
+<link href="{% static 'fullcalendar/core/main.css' %}" rel='stylesheet' />
+<link href="{% static 'fullcalendar/daygrid/main.css' %}" rel='stylesheet' />
+<link href="{% static 'fullcalendar/timegrid/main.css' %}" rel="stylesheet" />
+<link href="{% static 'fullcalendar/list/main.css' %}" rel="stylesheet" />
+<link href="{% static 'fullcalendar/bootstrap/main.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css" integrity="sha512-3JRrEUwaCkFUBLK1N8HehwQgu8e23jTH4np5NHOmQOobuC4ROQxFwFgBLTnhcnQRMs84muMh0PnnwXlPq5MGjg==" crossorigin="anonymous" />
+{% endblock styles %}
+
+
+
+{% block content %}
+<div>
+
+{% include 'components/detail-modal.html' %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Diş Hastanesi</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{request.user.get_full_name}}</h6>
+                    <p class="card-text">Diş hastanesi randevu sistemine hoş geldiniz.</p>
+                    <a href="{% url 'logout' %}" class="card-link">Çıkış Yap</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    <div id="calendar">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block scripts %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.41/moment-timezone-with-data-10-year-range.min.js"></script>
+<script src="{% static 'fullcalendar/core/main.min.js' %}"></script>
+<script src="{% static 'fullcalendar/moment/main.min.js' %}"></script>
+<script src="{% static 'fullcalendar/moment-timezone/main.min.js' %}"></script>
+<script src="{% static 'fullcalendar/daygrid/main.min.js' %}"></script>
+<script src="{% static 'fullcalendar/timegrid/main.min.js' %}"></script>
+<script src="{% static 'fullcalendar/list/main.js' %}"></script>
+<script src="{% static 'fullcalendar/interaction/main.js' %}"></script>
+<script src="{% static 'fullcalendar/bootstrap/main.js' %}"></script>
+<script src="{% static 'fullcalendar/core/locales/tr.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js" integrity="sha512-k6/Bkb8Fxf/c1Tkyl39yJwcOZ1P4cRrJu77p83zJjN2Z55prbFHxPs9vN7q3l3+tSMGPDdoH51AEU8Vgo1cgAA==" crossorigin="anonymous"></script>
+<script src="{% static 'js/site.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var selectedEvent = null;
+        var events = [];
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: ['interaction', 'dayGrid', 'timeGrid', 'list', 'bootstrap', 'momentTimezone'],
+            timeZone: 'Europe/Istanbul',
+            themeSystem: 'bootstrap',
+            bootstrapFontAwesome: {
+                dayGridMonth: 'calendar',
+                prev: 'fa-chevron-circle-left',
+                next: 'fa-chevron-circle-right',
+                listWeek: 'fa-list'
+            },
+            locale: 'tr',
+            header: {
+                left: 'prev, next, today',
+                center: 'title',
+                right: 'dayGridMonth, timeGridWeek, timeGridForFourDay, listWeek'
+            },
+            footer: {
+                left: 'prevYear',
+                right: 'nextYear'
+            },
+            minTime: '08:00:00',
+            maxTime: '21:00:00',
+            snapDuration: '00:15:00',
+            slotLabelFormat: {
+                hour: '2-digit',
+                minute: '2-digit',
+            },
+            fixedWeekCount: true,
+            showNonCurrentDates: false,
+            contentHeight: 650,
+            defaultView: 'dayGridMonth',
+            weekends: true,
+            hiddenDays: [0],
+            allDaySlot: false,
+            titleFormat: {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            },
+            titleRangeSeparator: ' / ',
+            columnHeaderFormat: {
+                weekday: 'long'
+            },
+            views: {
+                timeGridForFourDay: {
+                    type: 'timeGrid',
+                    duration: { days: 4 },
+                    buttonText: '4 Gün'
+                }
+            },
+            eventTimeFormat: {
+                hour: '2-digit',
+                minute: '2-digit',
+            },
+           
+            selectable: false,
+            eventClick: function (info) {
+                selectedEvent = {
+                    id: info.event.id,
+                    start: moment(info.event.start),
+                    end: moment(info.event.end),
+                    patientName: info.event.extendedProps.patientName,
+                    patientSurname: info.event.extendedProps.patientSurname,
+                    description: info.event.extendedProps.description,
+                    dentistId: info.event.extendedProps.userId
+                };
+                
+                $('#selectDentistIdDetail').val(info.event.extendedProps.userId)
+                $('#inputStartDateDetail').val(moment(info.event.start).format('DD/MM/YYYY HH:mm'))
+                $('#inputEndDateDetail').val(moment(info.event.end).format('DD/MM/YYYY HH:mm'))
+                $('#inputPatientNameDetail').val(info.event.extendedProps.patientName)
+                $('#inputPatientSurnameDetail').val(info.event.extendedProps.patientSurname)
+                $('#inputDescriptionDetail').val(info.event.extendedProps.description)
+                $('#detailModal').modal();
+            },
+            editable: false
+
+        });
+
+        calendar.render();
+        getAppointmentsByDentist();
+        $('#datetimepicker1, #datetimepicker2').datetimepicker({
+            format: 'DD/MM/YYYY HH:mm'
+        });
+
+        function getAppointmentsByDentist(){
+            $.ajax({
+                type: "GET",
+                url: "{% url 'appointment:get-appointmets-by-userid' %}?userId={{request.user.id}}",
+                success:function(response){
+                    events = [];
+                    var sources = calendar.getEventSources();
+                    for(var i=0; i < sources.length; i++){
+                        sources[i].remove();
+                    }
+                    response=response.model;
+                    for(var i=0; i < response.length; i++){
+                        events.push({
+                            id: response[i].id,
+                            title: response[i].dentist_full_name,
+                            patientName: response[i].patient_name,
+                            patientSurname: response[i].patient_surname,
+                            description: response[i].description,
+                            start: response[i].start_date,
+                            end: response[i].end_date,
+                            color: response[i].user__color,
+                            userId: response[i].user__id
+                        });
+                    }
+                    calendar.addEventSource(events);
+                },
+                error:function(){
+                    $('#detailModal').modal('hide')
+                    alertify.error('Bir hata oluştu!')
+                }
+            });
+        }
+
+          
+    });
+</script>
+{% endblock scripts %}

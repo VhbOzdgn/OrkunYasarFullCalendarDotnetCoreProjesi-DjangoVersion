@@ -1,0 +1,71 @@
+<div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Randevu Ekleme/Güncelleme</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="">
+            {% csrf_token %}
+            <input type="hidden" name="id" id="appointmentId">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label class="form-control-label">Başlangıç Tarihi</label>
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                  {{form.start_date}}
+                  <small id="start_date_error" class="text-danger clear-message"></small>
+                  <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  </div>
+              </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label class="form-control-label">Bitiş Tarihi</label>
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                  {{form.end_date}}
+                  <small id="end_date_error" class="text-danger clear-message"></small>
+                  <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  </div>
+              </div>
+              </div>
+            </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Hasta Adı</label>
+              {{form.patient_name}}
+              <small id="patient_name_error" class="text-danger clear-message"></small>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Hasta Soyadı</label>
+              {{form.patient_surname}}
+              <small id="patient_surname_error" class="text-danger clear-message"></small>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Açıklama</label>
+              {{form.description}}
+              <small id="description_error" class="text-danger clear-message"></small>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Doktor</label>
+              {{form.user}}
+              <small id="user_error" class="text-danger clear-message"></small>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+          <button id="btnSave" type="button" class="btn btn-primary">Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>

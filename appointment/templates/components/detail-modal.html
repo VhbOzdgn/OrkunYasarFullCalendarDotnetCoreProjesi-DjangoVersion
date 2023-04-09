@@ -1,0 +1,77 @@
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Randevu Detayları</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+            
+            <div class="row">
+              
+              <div class="form-group col-md-6">
+                <label class="form-control-label">Başlangıç Tarihi</label>
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                  <input disabled class="form-control" id="inputStartDateDetail"/>
+                  <small id="start_date_error" class="text-danger clear-message"></small>
+                  <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  </div>
+              </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label class="form-control-label">Bitiş Tarihi</label>
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                  <input disabled class="form-control" id="inputEndDateDetail"/>
+                  <small id="end_date_error" class="text-danger clear-message"></small>
+                  <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  </div>
+              </div>
+              </div>
+            </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Hasta Adı</label>
+              <input disabled class="form-control" id="inputPatientNameDetail"/>
+              <small id="patient_name_error" class="text-danger clear-message"></small>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Hasta Soyadı</label>
+              <input disabled class="form-control" id="inputPatientSurnameDetail"/>
+              <small id="patient_surname_error" class="text-danger clear-message"></small>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Açıklama</label>
+              <input disabled class="form-control" id="inputDescriptionDetail"/>
+              <small id="description_error" class="text-danger clear-message"></small>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Doktor</label>
+              <select disabled class="form-control" id="selectDentistIdDetail">
+                {% for user in form.user %}
+                  {{ user }}
+                {% endfor %}
+              </select>
+              <small id="user_error" class="text-danger clear-message"></small>
+            </div>
+          </div>
+        
+        </div>
+        <div class="modal-footer">
+          {% if showButtons %}
+          <button id="btnDelete" type="button" class="btn btn-outline-danger">Sil</button>
+          <button id="btnUpdate" type="button" class="btn btn-outline-primary">Güncelle</button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>

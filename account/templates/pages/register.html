@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Kayıt Ol
+{% endblock title %}
+
+
+
+{% block content %}
+<div class="">
+    <h3>Randevu Bilgi Sistemine Kayıt Ol</h3>
+    <hr>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {{form|crispy}}
+        <button type="submit" class="btn btn-danger">Gönder</button>
+    </form>
+</div>
+
+{% endblock content %}
+
+
+{% block scripts %}
+{% if not form.role.errors %}
+<script>
+    document.querySelector('#id_role').classList = "form-control"
+</script>
+{% endif %}
+{% endblock scripts %}
